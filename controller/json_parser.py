@@ -4,10 +4,10 @@ from model.transaction import Transaction
 from model.transactions import Transactions
 from model.transaction_type import TransactionType
 
-EXPENSES_KEY = 'despesas'
-GAINS_KEY = 'ganhos'
-DESCRIPTION_KEY = "description"
-VALUE_KEY = "value"
+EXPENSES_KEY = 'expenses'
+GAINS_KEY = 'gains'
+DESCRIPTION_KEY = 'description'
+VALUE_KEY = 'value'
 
 
 class JsonParser:
@@ -28,4 +28,7 @@ class JsonParser:
                     transactions_data.append(
                         Transaction(transaction_type, transaction[VALUE_KEY], transaction[DESCRIPTION_KEY], int(day))
                     )
-        return Transactions(transactions_data)
+        return Transactions(self.__order_transactions(transactions_data))
+
+    def __order_transactions(self, transactions_data):
+        return list(sorted(transactions_data, key=lambda transaction_data: transaction_data.value, reverse=True))

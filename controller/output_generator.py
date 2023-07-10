@@ -5,12 +5,13 @@ class OutputGenerator:
     def __init__(self, transactions: Transactions):
         self.transactions = transactions
 
-    def __show_transaction(self, transaction):
-        print(f'{transaction.description}: R$ {transaction.value:.2f}')
+    def __show_transaction(self, transaction, percentage):
+        print(f'{transaction.description} ({(percentage * 100):.2f} %): R$ {transaction.value:.2f}')
 
-    def __show_transactions(self, expenses):
-        for expense in expenses:
-            self.__show_transaction(expense)
+    def __show_transactions(self, transactions):
+        total = sum(map(lambda transaction_data: transaction_data.value, transactions))
+        for transaction in transactions:
+            self.__show_transaction(transaction, transaction.value / total)
 
     def generate(self):
         expenses = self.transactions.get_expenses()
